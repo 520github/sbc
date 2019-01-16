@@ -10,3 +10,8 @@ spring:
 
 server:
     port: 8881
+
+management:
+    security:
+        enabled: false
+
