@@ -21,6 +21,8 @@
         <module>config-server</module>
         <module>service-sms</module>
         <module>service-client</module>
+        <module>monitor-turbine</module>
+        <module>gateway</module>
     </modules>
 
     <properties>

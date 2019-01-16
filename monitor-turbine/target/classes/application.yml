@@ -1,0 +1,19 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/
+
+server:
+    port: 8903
+
+spring:
+    application:
+        name: monitor-turbine
+
+
+turbine:
+    appConfig: service-client, service-core
+    # service-core, service-client, config-server
+    clusterNameExpression: new String("default")
+    aggregator:
+        clusterConfig: default

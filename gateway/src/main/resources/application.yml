@@ -1,0 +1,26 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka/
+
+server:
+    port: 8904
+
+spring:
+    application:
+        name: gateway
+
+
+zuul:
+    routes:
+        serviceCore:
+            path: /api/core/**
+            serviceId: service-core
+
+        serviceSms:
+            path: /api/sms/**
+            serviceId: service-sms
+
+        serviceClient:
+            path: /api/client/**
+            serviceId: service-client
