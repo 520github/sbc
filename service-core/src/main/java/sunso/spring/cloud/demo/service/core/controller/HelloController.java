@@ -1,8 +1,11 @@
 package sunso.spring.cloud.demo.service.core.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import sunso.spring.cloud.demo.service.core.model.Person;
 
 /**
  * @Title:HelloController
@@ -21,5 +24,16 @@ public class HelloController {
     @RequestMapping("/")
     public String home() {
         return "hello world from port " + port;
+    }
+
+    @RequestMapping("/person")
+    public Person getPerson() {
+        return Person.defaultPerson();
+    }
+
+    @RequestMapping(value = "/person/save", method = RequestMethod.POST)
+    public Person putPerson(@RequestBody  Person person) {
+        System.out.println(person.toString());
+        return person;
     }
 }
