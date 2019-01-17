@@ -1,0 +1,50 @@
+version: '3'
+services:
+  eureka-01:
+    image: java:openjdk-8-jre-alpine
+    networks:
+      - eureka-net
+    ports:
+      - "8761:8761"
+    environment:
+      TZ: 'Asia/Shanghai'
+      EUREKA_HOSTNAME: 'eureka-01'
+      EUREKA_URI: 'http://eureka-02:8762/eureka,http://eureka-03:8763/eureka'
+      SERVER_PORT: 8761
+    volumes:
+      - "./eureka-server.jar:/opt/eureka-server.jar"
+    command: java -jar /opt/eureka-server.jar
+
+  eureka-02:
+    image: java:openjdk-8-jre-alpine
+    networks:
+      - eureka-net
+    ports:
+      - "8762:8762"
+    environment:
+      TZ: 'Asia/Shanghai'
+      EUREKA_HOSTNAME: 'eureka-02'
+      EUREKA_URI: 'http://eureka-01:8761/eureka,http://eureka-03:8763/eureka'
+      SERVER_PORT: 8762
+    volumes:
+      - "./eureka-server.jar:/opt/eureka-server.jar"
+    command: java -jar /opt/eureka-server.jar
+
+  eureka-03:
+    image: java:openjdk-8-jre-alpine
+    networks:
+      - eureka-net
+    ports:
+      - "8763:8763"
+    environment:
+      TZ: 'Asia/Shanghai'
+      EUREKA_HOSTNAME: 'eureka-03'
+      EUREKA_URI: 'http://eureka-01:8761/eureka,http://eureka-02:8762/eureka'
+      SERVER_PORT: 8763
+    volumes:
+      - "./eureka-server.jar:/opt/eureka-server.jar"
+    command: java -jar /opt/eureka-server.jar
+
+networks:
+  eureka-net:
+    driver: bridge
