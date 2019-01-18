@@ -27,43 +27,57 @@ services:
     command: java -jar /opt/eureka-server.jar
 
   config-server-01:
-    image: java:openjdk-8-jre-alpine
+    image: sunso:openjdk-8-jre-alpine
+    depends_on:
+      - eureka-server-01
+      - eureka-server-02
     ports:
       - "8888:8888"
     environment:
       TZ: 'Asia/Shanghai'
+      CONFIG_HOSTNAME: 'config-server-01'
       EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
       SERVER_PORT: 8888
     volumes:
       - "./config-server.jar:/opt/config-server.jar"
-    command: java -jar /opt/config-server.jar
+      - "./entrypoint.sh:/opt/entrypoint.sh"
+    # command: java -jar /opt/config-server.jar
+    entrypoint: /opt/entrypoint.sh -d eureka-server-01:8761,eureka-server-02:8762 -c 'java -jar /opt/config-server.jar'
 
-  gateway-01:
-    image: java:openjdk-8-jre-alpine
-    ports:
-      - "9999:9999"
-    environment:
-      TZ: 'Asia/Shanghai'
-      EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
-      SERVER_PORT: 9999
-    volumes:
-      - "./gateway.jar:/opt/gateway.jar"
-    command: java -jar /opt/gateway.jar
 
-  service-core-01:
-    image: java:openjdk-8-jre-alpine
-    ports:
-      - "9980:9980"
-    environment:
-      TZ: 'Asia/Shanghai'
-      EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
-      SERVER_PORT: 9980
-    volumes:
-      - "./service-core.jar:/opt/service-core.jar"
-    command: java -jar /opt/service-core.jar
-
+#  gateway-01:
+#    image: java:openjdk-8-jre-alpine
+#    depends_on:
+#      - eureka-server-01
+#      - eureka-server-02
+#    ports:
+#      - "9999:9999"
+#    environment:
+#      TZ: 'Asia/Shanghai'
+#      EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
+#      SERVER_PORT: 9999
+#    volumes:
+#      - "./gateway.jar:/opt/gateway.jar"
+#    command: java -jar /opt/gateway.jar
+#
+#  service-core-01:
+#    image: java:openjdk-8-jre-alpine
+#    depends_on:
+#      - config-server-01
+#    ports:
+#      - "9980:9980"
+#    environment:
+#      TZ: 'Asia/Shanghai'
+#      EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
+#      SERVER_PORT: 9980
+#    volumes:
+#      - "./service-core.jar:/opt/service-core.jar"
+#    command: java -jar /opt/service-core.jar
+#
   service-sms-01:
-      image: java:openjdk-8-jre-alpine
+      image: sunso:openjdk-8-jre-alpine
+      depends_on:
+        - config-server-01
       ports:
         - "9970:9970"
       environment:
@@ -72,16 +86,20 @@ services:
         SERVER_PORT: 9970
       volumes:
         - "./service-sms.jar:/opt/service-sms.jar"
-      command: java -jar /opt/service-sms.jar
-
-  service-client-01:
-        image: java:openjdk-8-jre-alpine
-        ports:
-          - "9960:9960"
-        environment:
-          TZ: 'Asia/Shanghai'
-          EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
-          SERVER_PORT: 9960
-        volumes:
-          - "./service-client.jar:/opt/service-client.jar"
-        command: java -jar /opt/service-client.jar
+        - "./entrypoint.sh:/opt/entrypoint.sh"
+      # command: java -jar /opt/service-sms.jar
+      entrypoint: /opt/entrypoint.sh -d config-server-01:8888 -c 'java -jar /opt/service-sms.jar'
+#
+#  service-client-01:
+#        image: java:openjdk-8-jre-alpine
+#        depends_on:
+#          - service-core-01
+#        ports:
+#          - "9960:9960"
+#        environment:
+#          TZ: 'Asia/Shanghai'
+#          EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
+#          SERVER_PORT: 9960
+#        volumes:
+#          - "./service-client.jar:/opt/service-client.jar"
+#        command: java -jar /opt/service-client.jar

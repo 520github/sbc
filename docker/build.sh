@@ -14,13 +14,18 @@ buildProject=${buildProject//,/  }
 
 for project in $buildProject
 do
+    pid=$(docker ps |grep $project | awk '{print $1}' | sort -r)
+
+    echo "-----------------do project "$project"------------------pid "$pid
     rm -f $targetPath$project$jarSuffix
     cp $rootPath$project"/target/"$project$jarSuffix $targetPath$project".jar"
 
-    docker stop $(docker ps |grep $project | awk '{print $1}' | sort -r)
-    # docker stop $(docker ps |grep eureka | awk '{print $1}' | sort -r)
-    docker rm $(docker ps |grep $project | awk '{print $1}' | sort -r)
+    if [ -n "$pid" ];then
+        docker stop $pid
+        docker rm $pid
+        # docker stop $(docker ps |grep eureka | awk '{print $1}' | sort -r)
+    fi
 done
 
 cd $targetPath
-docker-compose -f docker-compose-test.yml up -d
+# docker-compose -f docker-compose-test.yml up -d

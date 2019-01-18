@@ -2,8 +2,9 @@ package sunso.spring.cloud.demo.config.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.config.server.EnableConfigServer;
-import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
  * @Title:ConfigServerApplication
@@ -14,7 +15,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
  * @m444@126.com
  */
 
-@EnableEurekaServer
+//@EnableEurekaClient
+@EnableDiscoveryClient
 @EnableConfigServer
 @SpringBootApplication
 public class ConfigServerApplication {
