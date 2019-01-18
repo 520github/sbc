@@ -38,6 +38,7 @@ services:
       CONFIG_HOSTNAME: 'config-server-01'
       EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
       SERVER_PORT: 8888
+      SLEEP_SECOND: 10
     volumes:
       - "./config-server.jar:/opt/config-server.jar"
       - "./entrypoint.sh:/opt/entrypoint.sh"
@@ -84,6 +85,7 @@ services:
         TZ: 'Asia/Shanghai'
         EUREKA_URI: 'http://eureka-server-01:8761/eureka/,http://eureka-server-02:8762/eureka/'
         SERVER_PORT: 9970
+        SLEEP_SECOND: 10
       volumes:
         - "./service-sms.jar:/opt/service-sms.jar"
         - "./entrypoint.sh:/opt/entrypoint.sh"
