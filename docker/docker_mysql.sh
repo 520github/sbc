@@ -1,0 +1,1 @@
+docker run -d -p 3307:3306 --name mysql_6   -v /Users/sunso520/work/docker/mysql/data6:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=root mysql:5.6

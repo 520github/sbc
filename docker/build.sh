@@ -8,7 +8,7 @@ if [ -n "$1" ];then
 fi
 
 cd $rootPath
-# mvn install
+# mvn install -DskipTests
 
 buildProject=${buildProject//,/  }
 
