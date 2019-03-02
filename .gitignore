@@ -21,6 +21,17 @@ service-sms/target
 service-sms/.settings
 service-sms/.git
 
+gateway/target
+gateway/.settings
+gateway/.git
+
+tx-manager/target
+tx-manager/.settings
+tx-manager/.git
+
+monitor-turbine/target
+monitor-turbine/.settings
+monitor-turbine/.git
 
 .idea
 *.iml
